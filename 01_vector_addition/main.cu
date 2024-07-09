@@ -3,11 +3,12 @@
 
 #include "vec_add_cpu.h"
 #include "vec_add_gpu.h"
+#include "../utils.h"
 
 int main(int argc, char const *argv[])
 {
     // Length of arrays
-    int N = 10;
+    int N = 10000000;
     
     // Memory allocation
     float* A = (float*)malloc(N*sizeof(float));
@@ -23,22 +24,40 @@ int main(int argc, char const *argv[])
     }
 
     // Vector addition on a CPU
+    unsigned long long t1_cpu = myCPUTimer();
     vec_add_cpu(A, B, C, N);
+    unsigned long long t2_cpu = myCPUTimer();
+    printf("CPU execution time: %llu milliseconds \n", t2_cpu-t1_cpu);
     
     // Printing result
     printf("Array A: ");
-    for (int i = 0; i < N; i++)
-        printf("%.3f ", A[i]);
+    for (int i = 0; i < 10; i++)
+    {
+        if (i == 5)
+            printf(". . .");
+        else
+            printf("%.3f ", A[i]);   
+    }
     printf("\n");
 
     printf("Array B: ");
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < 10; i++)
+    {
+        if (i == 5)
+            printf(". . .");
+        else
         printf("%.3f ", B[i]);
+    }
     printf("\n");
 
     printf("Array C: ");
-    for (int i = 0; i < N; i++)
-        printf("%.3f ", C[i]);
+    for (int i = 0; i < 10; i++)
+    {
+        if (i == 5)
+            printf(". . .");
+        else
+            printf("%.3f ", C[i]);
+    }
     printf("\n");
     printf("\n");
 
@@ -47,22 +66,40 @@ int main(int argc, char const *argv[])
         C[i] = 0;
 
     // Vector addition on a GPU
+    unsigned long long t1_gpu = myCPUTimer();
     vec_add_gpu(A, B, C, N);
+    unsigned long long t2_gpu = myCPUTimer();
+    printf("GPU execution time: %llu milliseconds \n", t2_gpu-t1_gpu);
     
     // Printing result
     printf("Array A: ");
-    for (int i = 0; i < N; i++)
-        printf("%.3f ", A[i]);
+    for (int i = 0; i < 10; i++)
+    {
+        if (i == 5)
+            printf(". . .");
+        else
+            printf("%.3f ", A[i]);   
+    }
     printf("\n");
 
     printf("Array B: ");
-    for (int i = 0; i < N; i++)
-        printf("%.3f ", B[i]);
+    for (int i = 0; i < 10; i++)
+    {
+        if (i == 5)
+            printf(". . .");
+        else
+            printf("%.3f ", B[i]);
+    }
     printf("\n");
 
     printf("Array C: ");
-    for (int i = 0; i < N; i++)
-        printf("%.3f ", C[i]);
+    for (int i = 0; i < 10; i++)
+    {
+        if (i == 5)
+            printf(". . .");
+        else
+            printf("%.3f ", C[i]);
+    }
     printf("\n");
 
 
