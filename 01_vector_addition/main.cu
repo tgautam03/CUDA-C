@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
     unsigned long long t1_cpu = myCPUTimer();
     vec_add_cpu(A, B, C, N);
     unsigned long long t2_cpu = myCPUTimer();
-    printf("CPU execution time: %llu milliseconds \n", t2_cpu-t1_cpu);
+    printf("CPU execution time: %llu microseconds \n", t2_cpu-t1_cpu);
     
     // Printing result
     printf("Array A: ");
@@ -69,7 +69,7 @@ int main(int argc, char const *argv[])
     unsigned long long t1_gpu = myCPUTimer();
     vec_add_gpu(A, B, C, N);
     unsigned long long t2_gpu = myCPUTimer();
-    printf("GPU execution time: %llu milliseconds \n", t2_gpu-t1_gpu);
+    printf("GPU execution time: %llu microseconds \n", t2_gpu-t1_gpu);
     
     // Printing result
     printf("Array A: ");
