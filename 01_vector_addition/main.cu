@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "vec_add_cpu.h"
 #include "vec_add_gpu.h"
@@ -13,19 +14,21 @@ int main(int argc, char const *argv[])
     // Memory allocation
     float* A = (float*)malloc(N*sizeof(float));
     float* B = (float*)malloc(N*sizeof(float));
-    float* C = (float*)malloc(N*sizeof(float));
+    float* C_cpu = (float*)malloc(N*sizeof(float));
+    float* C_gpu = (float*)malloc(N*sizeof(float));
 
     // Initialize A, B and C
     for (int i = 0; i < N; i++)
     {
         A[i] = (float)(rand() % (10 - 0 + 1)+0);
         B[i] = (float)(rand() % (10 - 0 + 1)+0);
-        C[i] = 0;
+        C_cpu[i] = 0;
+        C_gpu[i] = 0;
     }
 
     // Vector addition on a CPU
     unsigned long long t1_cpu = myCPUTimer();
-    vec_add_cpu(A, B, C, N);
+    vec_add_cpu(A, B, C_cpu, N);
     unsigned long long t2_cpu = myCPUTimer();
     printf("CPU execution time: %llu microseconds \n", t2_cpu-t1_cpu);
     
@@ -56,18 +59,14 @@ int main(int argc, char const *argv[])
         if (i == 5)
             printf(". . .");
         else
-            printf("%.3f ", C[i]);
+            printf("%.3f ", C_cpu[i]);
     }
     printf("\n");
     printf("\n");
 
-    // Re-initialize C
-    for (int i = 0; i < N; i++)
-        C[i] = 0;
-
     // Vector addition on a GPU
     unsigned long long t1_gpu = myCPUTimer();
-    vec_add_gpu(A, B, C, N);
+    vec_add_gpu(A, B, C_gpu, N);
     unsigned long long t2_gpu = myCPUTimer();
     printf("GPU execution time: %llu microseconds \n", t2_gpu-t1_gpu);
     
@@ -98,15 +97,25 @@ int main(int argc, char const *argv[])
         if (i == 5)
             printf(". . .");
         else
-            printf("%.3f ", C[i]);
+            printf("%.3f ", C_gpu[i]);
     }
     printf("\n");
+
+    // Asserting Results
+    printf("\n");
+    printf("Asserting Results... \n");
+    for (int i = 0; i < N; i++)
+    {
+        assert(fabs(C_cpu[i] - C_gpu[i]) < 0.00000001);
+    }
+    printf("Asserting Passed! \n");
 
 
     // Free memory
     free(A);
     free(B);
-    free(C);
+    free(C_cpu);
+    free(C_gpu);
 
     return 0;
 }
