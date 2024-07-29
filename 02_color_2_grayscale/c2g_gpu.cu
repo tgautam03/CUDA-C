@@ -2,7 +2,7 @@
 
 #define CUDA_CHECK(err) {if (err != cudaSuccess){printf("%s in %s at line %d \n", cudaGetErrorString(err), __FILE__, __LINE__);exit(EXIT_FAILURE);}}
 
-__global__ void color_2_gray_kernel(float* P_in, float* P_out, int N, int M)
+__global__ void c2g_kernel(float* P_in, float* P_out, int N, int M)
 {
     // Working on P_out[i,j]
     int i = blockDim.y*blockIdx.y + threadIdx.y;
@@ -19,7 +19,7 @@ __global__ void color_2_gray_kernel(float* P_in, float* P_out, int N, int M)
     }
 }
 
-void color_2_gray_gpu(float* P_in, float* P_out, int N, int M)
+void c2g_gpu(float* P_in, float* P_out, int N, int M)
 {
     // Device array pointers
     float* d_P_in;
@@ -40,7 +40,7 @@ void color_2_gray_gpu(float* P_in, float* P_out, int N, int M)
     dim3 dim_block(64, 16, 1);
     dim3 dim_grid(ceil(M/64.0), ceil(N/16.0), 1);
 
-    color_2_gray_kernel<<<dim_grid, dim_block>>>(d_P_in, d_P_out, N, M);
+    c2g_kernel<<<dim_grid, dim_block>>>(d_P_in, d_P_out, N, M);
 
     // Copy back results from device to host
     cudaError_t err_out_ = cudaMemcpy(P_out, d_P_out, N*M*sizeof(float), cudaMemcpyDeviceToHost);

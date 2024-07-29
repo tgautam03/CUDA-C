@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "color_2_gray_gpu_h": "c"
+        "color_2_gray_gpu_h": "c",
+        "cmath": "cpp"
     }
 }
