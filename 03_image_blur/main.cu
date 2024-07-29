@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "img_blur_cpu.h"
 #include "img_blur_gpu.h"
@@ -53,6 +54,16 @@ int main(int argc, char const *argv[])
         }
         printf("\n");
     }
+
+    // Asserting Results
+    printf("\n");
+    printf("Asserting Results... \n");
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+            assert(fabs(P_out_cpu[i*M+j] - P_out_gpu[i*M+j]) < 0.00000001);
+    }
+    printf("Asserting Passed! \n");
 
     
     return 0;

@@ -1,4 +1,4 @@
-void color_2_gray_cpu(float* P_in, float* P_out, int N, int M)
+void c2g_cpu(float* P_in, float* P_out, int N, int M)
 {
     for (int i = 0; i < N*M; i++)
     {
