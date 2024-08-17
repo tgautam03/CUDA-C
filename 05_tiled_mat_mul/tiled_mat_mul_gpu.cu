@@ -55,11 +55,11 @@ __global__ void tiled_mat_mul_kernel(float* A, float* B, float* C, int N1, int N
 void tiled_mat_mul_gpu(float* A, float* B, float* C, int N1, int N2, int N3)
 {
     // Device properties
-    cudaDeviceProp dev_prop;
-    cudaGetDeviceProperties(&dev_prop, 0);
-    printf("Available Shared Memory per Block: %lu B \n", dev_prop.sharedMemPerBlock);
-    printf("Max Threads per Block: %i \n", dev_prop.maxThreadsPerBlock);
-    printf("Used Shared Memory per Block: %i B \n", TILE_WIDTH*TILE_WIDTH*8);
+    // cudaDeviceProp dev_prop;
+    // cudaGetDeviceProperties(&dev_prop, 0);
+    // printf("Available Shared Memory per Block: %lu B \n", dev_prop.sharedMemPerBlock);
+    // printf("Max Threads per Block: %i \n", dev_prop.maxThreadsPerBlock);
+    // printf("Used Shared Memory per Block: %i B \n", TILE_WIDTH*TILE_WIDTH*8);
 
     // Device array pointers
     float* d_A;

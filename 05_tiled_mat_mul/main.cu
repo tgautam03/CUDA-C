@@ -14,9 +14,9 @@ int main(int argc, char const *argv[])
 {
     // Matrix A size: N1 x N2
     // Matrix B size: N2 x N3
-    int N1 = 16384;
-    int N2 = 16384;
-    int N3 = 16384;
+    int N1 = 2678;
+    int N2 = 2678;
+    int N3 = 2678;
 
     // Generate N1xN2 matrix A
     float* A = (float*)malloc(N1*N2*sizeof(float));
@@ -33,14 +33,6 @@ int main(int argc, char const *argv[])
         for (int j = 0; j < N3; j++)
             B[i*N3+j] = (float)(rand() % (MAX_NUM - MIN_NUM + 1) + MIN_NUM);
     }
-
-    // // Matrix multiplication on a CPU
-    // float* C_cpu = (float*)malloc(N1*N3*sizeof(float));
-    // unsigned long long t1_cpu = myCPUTimer();
-    // mat_mul_cpu(A, B, C_cpu, N1, N2, N3);
-    // unsigned long long t2_cpu = myCPUTimer();
-    // printf("CPU execution time (N1: %d; N2: %d; N3: %d) : %llu microseconds \n", N1, N2, N3, t2_cpu-t1_cpu);
-    // printf("\n");
 
     // Matrix multiplication on a GPU
     float* C_gpu = (float*)malloc(N1*N3*sizeof(float));
@@ -59,8 +51,6 @@ int main(int argc, char const *argv[])
     printf("\n");
 
     // Speedup
-    // printf("Speed-up with GPU (N1: %d; N2: %d; N3: %d): %.3f x  \n", N1, N2, N3, (double)(t2_cpu-t1_cpu)/(t2_gpu-t1_gpu));
-    // printf("Speed-up with tiled GPU from CPU (N1: %d; N2: %d; N3: %d): %.3f x  \n", N1, N2, N3, (double)(t2_cpu-t1_cpu)/(t2_tiled_gpu-t1_tiled_gpu));
     printf("Speed-up with tiled GPU from untiled GPU (N1: %d; N2: %d; N3: %d): %.3f x  \n", N1, N2, N3, (double)(t2_gpu-t1_gpu)/(t2_tiled_gpu-t1_tiled_gpu));
     printf("\n");
 
@@ -69,18 +59,15 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < N1; i++)
     {
         for (int j = 0; j < N3; j++)
-        {
-            // assert(fabs(C_cpu[i*N3+j] - C_gpu[i*N3+j]) < 0.00000001);
             assert(fabs(C_gpu[i*N3+j] - C_tiled_gpu[i*N3+j]) < 0.00000001);
-        }
     }
     printf("Asserting Passed! \n");
 
     // Free memory
     free(A);
     free(B);
-    // free(C_cpu);
-    // free(C_gpu);
+    free(C_gpu);
+    free(C_tiled_gpu);
     
     return 0;
 }
