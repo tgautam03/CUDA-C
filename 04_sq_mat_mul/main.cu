@@ -12,7 +12,7 @@
 
 int main(int argc, char const *argv[])
 {
-    int N = 8000;
+    int N = 16384;
 
     // Generate NxN square matrices A and B
     float* A = (float*)malloc(N*N*sizeof(float));
