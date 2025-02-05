@@ -1,0 +1,6 @@
+# Stencil Computations
+✔ main.cpp @started(25-02-05 06:58) @done(25-02-05 07:30) @lasted(32m32s)
+✔ CPU Implementation @done(25-02-05 07:59)
+    ✔ Stencil function @started(25-02-05 07:30) @done(25-02-05 07:58) @lasted(28m59s)
+☐ Naive GPU Implementation
+    ☐ Stencil kernel
