@@ -2,5 +2,5 @@
 ✔ main.cpp @started(25-02-05 06:58) @done(25-02-05 07:30) @lasted(32m32s)
 ✔ CPU Implementation @done(25-02-05 07:59)
     ✔ Stencil function @started(25-02-05 07:30) @done(25-02-05 07:58) @lasted(28m59s)
-☐ Naive GPU Implementation
-    ☐ Stencil kernel
+✔ Naive GPU Implementation @done(25-02-06 12:31)
+    ✔ Stencil kernel @started(25-02-06 11:38) @done(25-02-06 12:31) @lasted(53m6s)

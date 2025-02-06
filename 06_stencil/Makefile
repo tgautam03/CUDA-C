@@ -1,5 +1,5 @@
 CC = nvcc
 all: main
 
-main: main.cpp cpu_stencil.cpp
-	@$(CC) cpu_stencil.cpp main.cpp -o main.out 
+main: main.cu cpu_stencil.cpp naive_gpu_stencil.cu
+	@$(CC) cpu_stencil.cpp naive_gpu_stencil.cu main.cu -o main.out 
