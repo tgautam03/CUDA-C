@@ -27,6 +27,9 @@ __global__ void tiled_gpu_stencil(float *in_arr, float *out_arr, int width, int 
 #define OUT_COARSE_TILE_DIM (IN_COARSE_TILE_DIM - 2)
 __global__ void coarse_tiled_gpu_stencil(float *in_arr, float *out_arr, int width, int height, int depth);
 
+// GPU register coarse tiled stencil computation
+__global__ void register_coarse_tiled_gpu_stencil(float *in_arr, float *out_arr, int width, int height, int depth);
+
 int main(int argc, char const *argv[])
 {
     // For recording time
@@ -163,6 +166,34 @@ int main(int argc, char const *argv[])
     cudaEventElapsedTime(&elapsed_time, beg, end);
     elapsed_time /= 1000.;
     std::cout << "GPU (coarse tiled) runtime: " << elapsed_time / 10.0 << " secs \n";
+
+    // Copy result
+    err = cudaMemcpy(out_arr_gpu, d_out_arr, width*height*depth*sizeof(float), cudaMemcpyDeviceToHost);
+    cuda_check(err);
+
+    // Assert results
+    for (int i = 0; i < width*height*depth; i++)
+        assert (out_arr_cpu[i] == out_arr_gpu[i]);
+
+    // ============================================ //
+    // Register coarse Tiled parallel stencil (GPU) //
+    // ============================================ //
+    dim3 dim_block_register_coarse_tiled(IN_COARSE_TILE_DIM, IN_COARSE_TILE_DIM, IN_COARSE_TILE_DIM);
+    dim3 dim_grid_register_coarse_tiled(ceil(width/static_cast<float>(OUT_COARSE_TILE_DIM)), ceil(height/static_cast<float>(OUT_COARSE_TILE_DIM)), ceil(depth/static_cast<float>(OUT_COARSE_TILE_DIM)));
+    
+    // Warmup runs
+    for (int i = 0; i < 10; i++)
+        register_coarse_tiled_gpu_stencil<<<dim_grid_register_coarse_tiled, dim_block_register_coarse_tiled>>>(d_in_arr, d_out_arr, width, height, depth);
+
+    cudaEventRecord(beg);
+    for (int i = 0; i < 10; i++)
+        register_coarse_tiled_gpu_stencil<<<dim_grid_register_coarse_tiled, dim_block_register_coarse_tiled>>>(d_in_arr, d_out_arr, width, height, depth);
+    cudaEventRecord(end);
+    cudaEventSynchronize(beg);
+    cudaEventSynchronize(end);
+    cudaEventElapsedTime(&elapsed_time, beg, end);
+    elapsed_time /= 1000.;
+    std::cout << "GPU (register coarse tiled) runtime: " << elapsed_time / 10.0 << " secs \n";
 
     // Copy result
     err = cudaMemcpy(out_arr_gpu, d_out_arr, width*height*depth*sizeof(float), cudaMemcpyDeviceToHost);

@@ -7,3 +7,4 @@ Simple problems implemented in CUDA C. The main focus of this work is to write s
 - 03: Image Blur
 - 04: Square Matrix Multiplication
 - 05: General Tiled Matrix Multiplication
+- 06: Stencil Computation
