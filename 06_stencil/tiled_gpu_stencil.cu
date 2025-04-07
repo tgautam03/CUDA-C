@@ -31,7 +31,7 @@ __global__ void tiled_gpu_stencil(float *in_arr, float *out_arr, int width, int 
                                                     + 1*in_sh_tile[threadIdx.z][threadIdx.y-1][threadIdx.x]
                                                     + 1*in_sh_tile[threadIdx.z][threadIdx.y+1][threadIdx.x]
                                                     + 1*in_sh_tile[threadIdx.z-1][threadIdx.y][threadIdx.x]
-                                                    + 1*in_sh_tile[threadIdx.z+1][threadIdx.y][threadIdx.x]; 
+                                                    + 1*in_sh_tile[threadIdx.z+1][threadIdx.y][threadIdx.x];
         }
-    }    
-}                
+    }
+}            
